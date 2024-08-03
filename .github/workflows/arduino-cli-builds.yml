@@ -74,7 +74,11 @@ jobs:
 
       - name: Get short SHA
         id: get-short-sha
-        run: echo ${{github.sha}} | cut -c 1-7 >> $GITHUB_OUTPUT
+        run: |
+          id=$(echo ${{github.sha}} | cut -c 1-7)
+          echo "id=$id" >> $GITHUB_OUTPUT
+          
+      - run: echo "${{steps.get-id.outputs.id}}"
         
       - name: Compile for ${{ matrix.name }}
         run: arduino-cli compile -e --fqbn rp2040:rp2040:${{matrix.fqbn}}:${{matrix.flags}} SamcoEnhanced --libraries libraries --build-property 'build.extra_flags=-DPLAYER_NUMBER=1 -DGIT_HASH=${{steps.get-short-sha.outputs.id}} -DDUAL_CORE -DMAMEHOOKER -DUSES_SOLENOID -DUSES_TEMP -DUSES_RUMBLE -DUSES_SWITCHES -DUSES_ANALOG -DFOURPIN_LED -DCUSTOM_NEOPIXEL -DUSES_DISPLAY'
