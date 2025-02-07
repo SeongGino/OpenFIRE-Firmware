@@ -14,8 +14,8 @@
  * @author [That One Seong](SeongsSeongs@gmail.com)
  * @date 2024
  */
-#define OPENFIRE_VERSION 5.1
-#define OPENFIRE_CODENAME "Heartful"
+#define OPENFIRE_VERSION 5.2
+#define OPENFIRE_CODENAME "Dawn"
 
  // For custom builders, remember to check (COMPILING.md) for IDE instructions!
  // ISSUERS: REMEMBER TO SPECIFY YOUR USING A CUSTOM BUILD & WHAT CHANGES ARE MADE TO THE SKETCH; OTHERWISE YOUR ISSUE MAY BE CLOSED!
@@ -44,12 +44,13 @@
     #define LED_ENABLE
     #include <Adafruit_NeoPixel.h>
 #endif
+/* TODO: Arduino Nano LED support disabled due to instability.
 #ifdef ARDUINO_NANO_RP2040_CONNECT
     #define LED_ENABLE
     // Apparently an LED is included, but has to be communicated with through the WiFi chip (or else it throws compiler errors)
     // That said, LEDs are attached to Pins 25(G), 26(B), 27(R).
     #include <WiFiNINA.h>
-#endif
+#endif // ARDUINO_NANO */
 #ifdef SAMCO_FLASH_ENABLE
     #include <Adafruit_SPIFlashBase.h>
 #elif SAMCO_EEPROM_ENABLE
@@ -199,20 +200,20 @@ enum ButtonMask_e {
 // see LightgunButtons::Desc_t, format is: 
 // {pin, report type, report code (ignored for internal), offscreen report type, offscreen report code, gamepad output report type, gamepad output report code, debounce time, debounce mask, label}
 LightgunButtons::Desc_t LightgunButtons::ButtonDesc[] = {
-    {SamcoPreferences::pins.bTrigger, LightgunButtons::ReportType_Internal, MOUSE_LEFT, LightgunButtons::ReportType_Internal, MOUSE_LEFT, LightgunButtons::ReportType_Internal, PAD_RT, 15, BTN_AG_MASK}, // Barry says: "I'll handle this."
-    {SamcoPreferences::pins.bGunA, LightgunButtons::ReportType_Mouse, MOUSE_RIGHT, LightgunButtons::ReportType_Mouse, MOUSE_RIGHT, LightgunButtons::ReportType_Gamepad, PAD_LT, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunB, LightgunButtons::ReportType_Mouse, MOUSE_MIDDLE, LightgunButtons::ReportType_Mouse, MOUSE_MIDDLE, LightgunButtons::ReportType_Gamepad, PAD_Y, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bStart, LightgunButtons::ReportType_Keyboard, playerStartBtn, LightgunButtons::ReportType_Keyboard, playerStartBtn, LightgunButtons::ReportType_Gamepad, PAD_START, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bSelect, LightgunButtons::ReportType_Keyboard, playerSelectBtn, LightgunButtons::ReportType_Keyboard, playerSelectBtn, LightgunButtons::ReportType_Gamepad, PAD_SELECT, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunUp, LightgunButtons::ReportType_Gamepad, PAD_UP, LightgunButtons::ReportType_Gamepad, PAD_UP, LightgunButtons::ReportType_Gamepad, PAD_UP, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunDown, LightgunButtons::ReportType_Gamepad, PAD_DOWN, LightgunButtons::ReportType_Gamepad, PAD_DOWN, LightgunButtons::ReportType_Gamepad, PAD_DOWN, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunLeft, LightgunButtons::ReportType_Gamepad, PAD_LEFT, LightgunButtons::ReportType_Gamepad, PAD_LEFT, LightgunButtons::ReportType_Gamepad, PAD_LEFT, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunRight, LightgunButtons::ReportType_Gamepad, PAD_RIGHT, LightgunButtons::ReportType_Gamepad, PAD_RIGHT, LightgunButtons::ReportType_Gamepad, PAD_RIGHT, 20, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bGunC, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON4, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON4, LightgunButtons::ReportType_Gamepad, PAD_A, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bPedal, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON4, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON4, LightgunButtons::ReportType_Gamepad, PAD_X, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bPedal2, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON5, LightgunButtons::ReportType_Mouse, MOUSE_BUTTON5, LightgunButtons::ReportType_Gamepad, PAD_B, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bPump, LightgunButtons::ReportType_Mouse, MOUSE_RIGHT, LightgunButtons::ReportType_Mouse, MOUSE_RIGHT, LightgunButtons::ReportType_Gamepad, PAD_LT, 15, BTN_AG_MASK2},
-    {SamcoPreferences::pins.bHome, LightgunButtons::ReportType_Internal, 0, LightgunButtons::ReportType_Internal, 0, LightgunButtons::ReportType_Internal, 0, 15, BTN_AG_MASK2}
+    {SamcoPreferences::pins.bTrigger,  LightgunButtons::ReportType_Internal, MOUSE_LEFT,      LightgunButtons::ReportType_Internal, MOUSE_LEFT,      LightgunButtons::ReportType_Internal, PAD_RT,     15, BTN_AG_MASK}, // Barry says: "I'll handle this."
+    {SamcoPreferences::pins.bGunA,     LightgunButtons::ReportType_Mouse,    MOUSE_RIGHT,     LightgunButtons::ReportType_Mouse,    MOUSE_RIGHT,     LightgunButtons::ReportType_Gamepad,  PAD_LT,     15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunB,     LightgunButtons::ReportType_Mouse,    MOUSE_MIDDLE,    LightgunButtons::ReportType_Mouse,    MOUSE_MIDDLE,    LightgunButtons::ReportType_Gamepad,  PAD_Y,      15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bStart,    LightgunButtons::ReportType_Keyboard, playerStartBtn,  LightgunButtons::ReportType_Keyboard, playerStartBtn,  LightgunButtons::ReportType_Gamepad,  PAD_START,  20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bSelect,   LightgunButtons::ReportType_Keyboard, playerSelectBtn, LightgunButtons::ReportType_Keyboard, playerSelectBtn, LightgunButtons::ReportType_Gamepad,  PAD_SELECT, 20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunUp,    LightgunButtons::ReportType_Gamepad,  PAD_UP,          LightgunButtons::ReportType_Gamepad,  PAD_UP,          LightgunButtons::ReportType_Gamepad,  PAD_UP,     20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunDown,  LightgunButtons::ReportType_Gamepad,  PAD_DOWN,        LightgunButtons::ReportType_Gamepad,  PAD_DOWN,        LightgunButtons::ReportType_Gamepad,  PAD_DOWN,   20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunLeft,  LightgunButtons::ReportType_Gamepad,  PAD_LEFT,        LightgunButtons::ReportType_Gamepad,  PAD_LEFT,        LightgunButtons::ReportType_Gamepad,  PAD_LEFT,   20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunRight, LightgunButtons::ReportType_Gamepad,  PAD_RIGHT,       LightgunButtons::ReportType_Gamepad,  PAD_RIGHT,       LightgunButtons::ReportType_Gamepad,  PAD_RIGHT,  20, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bGunC,     LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON4,   LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON4,   LightgunButtons::ReportType_Gamepad,  PAD_A,      15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bPedal,    LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON4,   LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON4,   LightgunButtons::ReportType_Gamepad,  PAD_X,      15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bPedal2,   LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON5,   LightgunButtons::ReportType_Mouse,    MOUSE_BUTTON5,   LightgunButtons::ReportType_Gamepad,  PAD_B,      15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bPump,     LightgunButtons::ReportType_Mouse,    MOUSE_RIGHT,     LightgunButtons::ReportType_Mouse,    MOUSE_RIGHT,     LightgunButtons::ReportType_Gamepad,  PAD_LT,     15, BTN_AG_MASK2},
+    {SamcoPreferences::pins.bHome,     LightgunButtons::ReportType_Internal, 0,               LightgunButtons::ReportType_Internal, 0,               LightgunButtons::ReportType_Internal, 0,          15, BTN_AG_MASK2}
 };
 
 // button count constant
@@ -326,6 +327,17 @@ bool buttonPressed = false;                      // Sanity check.
 
 #ifdef MAMEHOOKER
 // For serial mode:
+    enum SerialQueueBits {
+        SerialQueue_Solenoid = 0,
+        SerialQueue_SolPulse,
+        SerialQueue_Rumble,
+        SerialQueue_RumbPulse,
+        SerialQueue_Red,
+        SerialQueue_Green,
+        SerialQueue_Blue,
+        SerialQueue_LEDPulse
+    };
+
     bool serialMode = false;                         // Set if we're prioritizing force feedback over serial commands or not.
     bool offscreenButtonSerial = false;              // Serial-only version of offscreenButton toggle.
     byte serialQueue = 0b00000000;                   // Bitmask of events we've queued from the serial receipt.
@@ -352,15 +364,15 @@ bool buttonPressed = false;                      // Sanity check.
     #endif // USES_RUMBLE
     #ifdef USES_SOLENOID
     unsigned long serialSolPulsesLastUpdate = 0;     // The timestamp of the last serial-invoked pulse solenoid event we updated.
-    unsigned int serialSolPulsesLength = 80;         // How long to wait between each solenoid event in a pulse, in ms.
-    bool serialSolPulseOn = false;                   // Because we can't just read it normally, is the solenoid getting PWM high output now?
     int serialSolPulses = 0;                         // How many solenoid pulses are we being told to do?
     int serialSolPulsesLast = 0;                     // What solenoid pulse we've processed last.
     #endif // USES_SOLENOID
     #ifdef USES_DISPLAY
     bool serialDisplayChange = false;                // Signal of pending display update, sent by Core 2 to be used by Core 1 in dual core configs
-    uint8_t serialLifeCount = 0;
+    uint16_t serialLifeCount = 0;		     // Changed from uint16_t for games with life values > 255
     uint8_t serialAmmoCount = 0;
+    uint16_t dispMaxLife = 0; 			     // Max value for life in lifebar mode (100%)
+    uint16_t dispLifePercentage = 0; 		     // Actual value to show in lifebar mode #%
     #endif // USES_DISPLAY
 #endif // MAMEHOOKER
 
@@ -689,13 +701,10 @@ void setup() {
             profileData[selectedProfile].rightOffset == 0)) { SetMode(GunMode_Calibration); }
             else { SetMode(GunMode_Run); }
     } else {
-        // unofficial official "MiSTer mode" - default to camera -> left stick if trigger's held.
-        // For some reason, doing this through buttons.Poll doesn't work, so just directly read the pin.
-        // (pullup resistors make this normally closed/1 when unpressed, open/0 when pressed.)
+        /* In case someone wants to implement functionality when user holds trigger on boot, here's the former "mister mode" template c:
         if(SamcoPreferences::pins.bTrigger >= 0 && !digitalRead(SamcoPreferences::pins.bTrigger)) {
-            buttons.analogOutput = true;
-            Gamepad16.stickRight = true;
-        }
+            
+        }*/
         // this will turn off the DotStar/RGB LED and ensure proper transition to Run
         SetMode(GunMode_Run);
     }
@@ -1334,11 +1343,29 @@ void ExecRunMode()
             #ifdef USES_RUMBLE
                 if(SamcoPreferences::pins.sRumble >= 0) {
                     SamcoPreferences::toggles.rumbleActive = !digitalRead(SamcoPreferences::pins.sRumble);
+                    #ifdef MAMEHOOKER
+                    if(!serialMode) {
+                    #endif // MAMEHOOKER
+                        if(!SamcoPreferences::toggles.rumbleActive && OF_FFB.rumbleHappening) {
+                            OF_FFB.FFBShutdown();
+                        }
+                    #ifdef MAMEHOOKER
+                    }
+                    #endif // MAMEHOOKER
                 }
             #endif // USES_RUMBLE
             #ifdef USES_SOLENOID
                 if(SamcoPreferences::pins.sSolenoid >= 0) {
                     SamcoPreferences::toggles.solenoidActive = !digitalRead(SamcoPreferences::pins.sSolenoid);
+                    #ifdef MAMEHOOKER
+                    if(!serialMode) {
+                    #endif // MAMEHOOKER
+                        if(!SamcoPreferences::toggles.solenoidActive && digitalRead(SamcoPreferences::pins.oSolenoid)) {
+                            OF_FFB.FFBShutdown();
+                        }
+                    #ifdef MAMEHOOKER
+                    }
+                    #endif // MAMEHOOKER
                 }
             #endif // USES_SOLENOID
             if(SamcoPreferences::pins.sAutofire >= 0) {
@@ -1396,7 +1423,12 @@ void ExecRunMode()
                 // so just do it here using the signal sent by it.
                 if(serialDisplayChange) {
                     if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Ammo) { OLED.PrintAmmo(serialAmmoCount); }
+		    else if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Life && OLED.lifeBar) { OLED.PrintLife(dispLifePercentage); } 
                     else if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Life) { OLED.PrintLife(serialLifeCount); }
+                    else if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Both && OLED.lifeBar) {
+                      OLED.PrintAmmo(serialAmmoCount);
+                      OLED.PrintLife(dispLifePercentage);
+                    } 
                     else if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Both) {
                       OLED.PrintAmmo(serialAmmoCount);
                       OLED.PrintLife(serialLifeCount);
@@ -1438,27 +1470,11 @@ void ExecRunMode()
                 if(t - pauseHoldStartstamp > SamcoPreferences::settings.pauseHoldLength) {
                     // MAKE SURE EVERYTHING IS DISENGAGED:
                     OF_FFB.FFBShutdown();
-		    /*
-		    #ifdef USES_SOLENOID
-                        digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
-                        solenoidFirstShot = false;
-                    #endif // USES_SOLENOID
-                    #ifdef USES_RUMBLE
-                        digitalWrite(SamcoPreferences::pins.oRumble, LOW);
-                        rumbleHappening = false;
-                        rumbleHappened = false;
-                    #endif // USES_RUMBLE
-                    */
-		    Keyboard.releaseAll();
+		                Keyboard.releaseAll();
                     AbsMouse5.releaseAll();
                     offscreenBShot = false;
                     buttonPressed = false;
-                    /*
-		    triggerHeld = false;
-                    burstFiring = false;
-                    burstFireCount = 0;
-                    */
-	    	    pauseModeSelection = PauseMode_Calibrate;
+	    	            pauseModeSelection = PauseMode_Calibrate;
                     SetMode(GunMode_Pause);
                     buttons.ReportDisable();
                     return;
@@ -1468,32 +1484,16 @@ void ExecRunMode()
             if(buttons.pressedReleased == EnterPauseModeBtnMask || buttons.pressedReleased == BtnMask_Home) {
                 // MAKE SURE EVERYTHING IS DISENGAGED:
                 OF_FFB.FFBShutdown();
-		/*
-		#ifdef USES_SOLENOID
-                    digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
-                    solenoidFirstShot = false;
-                #endif // USES_SOLENOID
-                #ifdef USES_RUMBLE
-                    digitalWrite(SamcoPreferences::pins.oRumble, LOW);
-                    rumbleHappening = false;
-                    rumbleHappened = false;
-                #endif // USES_RUMBLE
-                */
-		Keyboard.releaseAll();
+		            Keyboard.releaseAll();
                 AbsMouse5.releaseAll();
                 offscreenBShot = false;
                 buttonPressed = false;
-                /*
-		triggerHeld = false;
-                burstFiring = false;
-                burstFireCount = 0;
-                */
-		SetMode(GunMode_Pause);
+		            SetMode(GunMode_Pause);
                 buttons.ReportDisable();
                 return;
             }
         }
-        #else                                                       // if we're using dual cores,
+        #else  // if we're using dual cores,
         if(gunMode != GunMode_Run) {                                // We just check if the gunmode has been changed by the other thread.
             Keyboard.releaseAll();
             AbsMouse5.releaseAll();
@@ -1744,10 +1744,10 @@ void ExecCalMode()
     buttons.ReportDisable();
     uint8_t calStage = 0;
     // hold values in a buffer till calibration is complete
-    int topOffset;             
-    int bottomOffset;         
-    int leftOffset;     
-    int rightOffset;   
+    int topOffset;
+    int bottomOffset;
+    int leftOffset;
+    int rightOffset;
     // backup current values in case the user cancels
     int _topOffset = profileData[selectedProfile].topOffset;
     int _bottomOffset = profileData[selectedProfile].bottomOffset;
@@ -1758,14 +1758,27 @@ void ExecCalMode()
     float _adjX = profileData[selectedProfile].adjX;
     float _adjY = profileData[selectedProfile].adjY;
     // set current values to factory defaults
-    profileData[selectedProfile].topOffset = 0, profileData[selectedProfile].bottomOffset = 0,
-    profileData[selectedProfile].leftOffset = 0, profileData[selectedProfile].rightOffset = 0;
+    profileData[selectedProfile].topOffset = 0;
+    profileData[selectedProfile].bottomOffset = 0;
+    profileData[selectedProfile].leftOffset = 0;
+    profileData[selectedProfile].rightOffset = 0;
 
-    // force center mouse to center
+    // Force center mouse to center
     AbsMouse5.move(32768/2, 32768/2);
-    // jack in, CaliMan, execute!!!
+
+    // Initialize current mouse positions (local variables)
+    int32_t mouseCurrentX = 32768 / 2;
+    int32_t mouseCurrentY = 32768 / 2;
+
+    // Initialize variables for incremental movement
+    int32_t mouseTargetX = mouseCurrentX;
+    int32_t mouseTargetY = mouseCurrentY;
+    bool mouseMoving = false;
+
+    // Jack in, CaliMan, execute!!!
     SetMode(GunMode_Calibration);
     Serial.printf("CalStage: %d\r\n", Cali_Init);
+
     while(gunMode == GunMode_Calibration) {
         buttons.Poll(1);
 
@@ -1773,7 +1786,34 @@ void ExecCalMode()
             irPosUpdateTick = 0;
             GetPosition();
         }
-        
+
+        // Handle incremental mouse movement
+        if (mouseMoving) {
+            int32_t deltaX = mouseTargetX - mouseCurrentX;
+            int32_t deltaY = mouseTargetY - mouseCurrentY;
+            int32_t stepX = 30;
+            int32_t stepY = 30;
+
+            if (abs(deltaX) < stepX) stepX = abs(deltaX);
+            if (abs(deltaY) < stepY) stepY = abs(deltaY);
+
+            if (deltaX != 0) {
+                mouseCurrentX += (deltaX > 0) ? stepX : -stepX;
+            }
+
+            if (deltaY != 0) {
+                mouseCurrentY += (deltaY > 0) ? stepY : -stepY;
+            }
+
+            AbsMouse5.move(mouseCurrentX, mouseCurrentY);
+
+            if (mouseCurrentX == mouseTargetX && mouseCurrentY == mouseTargetY) {
+                mouseMoving = false;
+                delay(5);  // Optional small delay
+            }
+        }
+
+        // Handle button presses and calibration stages
         if((buttons.pressedReleased & (ExitPauseModeBtnMask | ExitPauseModeHoldBtnMask)) && !justBooted) {
             Serial.printf("CalStage: %d\r\n", Cali_Verify+1);
             // Reapplying backed up data
@@ -1785,151 +1825,182 @@ void ExecCalMode()
             profileData[selectedProfile].TRled = _TRled;
             profileData[selectedProfile].adjX = _adjX;
             profileData[selectedProfile].adjY = _adjY;
-            // re-print the profile
+            // Re-print the profile
             stateFlags |= StateFlag_PrintSelectedProfile;
-            // re-apply the cal stored in the profile
+            // Re-apply the cal stored in the profile
             if(dockedCalibrating) {
                 SetMode(GunMode_Docked);
                 dockedCalibrating = false;
             } else {
-                // return to pause mode
+                // Return to pause mode
                 SetMode(GunMode_Run);
             }
             return;
-        } else if(buttons.pressed == BtnMask_Trigger) {
+        } else if(buttons.pressed == BtnMask_Trigger && !mouseMoving) {
             calStage++;
             Serial.printf("CalStage: %d\r\n", calStage);
-            // make sure our messages go through, or else the HID reports eats UART.
+            // Ensure our messages go through, or else the HID reports eat UART.
             Serial.flush();
-            CaliMousePosMove(calStage);
             switch(calStage) {
                 case Cali_Init:
-                  break;
+                    // Initial state, nothing to do
+                    break;
+
                 case Cali_Top:
-                  // Resest Offsets
-                  topOffset = 0;             
-                  bottomOffset = 0;         
-                  leftOffset = 0; 
-                  rightOffset = 0;
-                  // Set Cam center offsets
-                  if(profileData[selectedProfile].irLayout) {
-                      profileData[selectedProfile].adjX = (OpenFIREdiamond.testMedianX() - (512 << 2)) * cos(OpenFIREdiamond.Ang()) - (OpenFIREdiamond.testMedianY() - (384 << 2)) * sin(OpenFIREdiamond.Ang()) + (512 << 2);       
-                      profileData[selectedProfile].adjY = (OpenFIREdiamond.testMedianX() - (512 << 2)) * sin(OpenFIREdiamond.Ang()) + (OpenFIREdiamond.testMedianY() - (384 << 2)) * cos(OpenFIREdiamond.Ang()) + (384 << 2);
-                  } else {
-                      profileData[selectedProfile].adjX = (OpenFIREsquare.testMedianX() - (512 << 2)) * cos(OpenFIREsquare.Ang()) - (OpenFIREsquare.testMedianY() - (384 << 2)) * sin(OpenFIREsquare.Ang()) + (512 << 2);       
-                      profileData[selectedProfile].adjY = (OpenFIREsquare.testMedianX() - (512 << 2)) * sin(OpenFIREsquare.Ang()) + (OpenFIREsquare.testMedianY() - (384 << 2)) * cos(OpenFIREsquare.Ang()) + (384 << 2);
-                      // Work out Led locations by assuming height is 100%
-                      profileData[selectedProfile].TLled = (res_x / 2) - ( (OpenFIREsquare.W() * (res_y  / OpenFIREsquare.H()) ) / 2);            
-                      profileData[selectedProfile].TRled = (res_x / 2) + ( (OpenFIREsquare.W() * (res_y  / OpenFIREsquare.H()) ) / 2);
-                  }
-                  
-                  // Update Cam centre in perspective library
-                  OpenFIREper.source(profileData[selectedProfile].adjX, profileData[selectedProfile].adjY);                                                          
-                  OpenFIREper.deinit(0);
-                  // Move to top calibration point
-                  AbsMouse5.move(32768/2, 0);
-                  break;
+                    // Reset Offsets
+                    topOffset = 0;
+                    bottomOffset = 0;
+                    leftOffset = 0;
+                    rightOffset = 0;
+                    // Set Cam center offsets
+                    if(profileData[selectedProfile].irLayout) {
+                        profileData[selectedProfile].adjX = (OpenFIREdiamond.testMedianX() - (512 << 2)) * cos(OpenFIREdiamond.Ang()) -
+                            (OpenFIREdiamond.testMedianY() - (384 << 2)) * sin(OpenFIREdiamond.Ang()) + (512 << 2);
+                        profileData[selectedProfile].adjY = (OpenFIREdiamond.testMedianX() - (512 << 2)) * sin(OpenFIREdiamond.Ang()) +
+                            (OpenFIREdiamond.testMedianY() - (384 << 2)) * cos(OpenFIREdiamond.Ang()) + (384 << 2);
+                    } else {
+                        profileData[selectedProfile].adjX = (OpenFIREsquare.testMedianX() - (512 << 2)) * cos(OpenFIREsquare.Ang()) -
+                            (OpenFIREsquare.testMedianY() - (384 << 2)) * sin(OpenFIREsquare.Ang()) + (512 << 2);
+                        profileData[selectedProfile].adjY = (OpenFIREsquare.testMedianX() - (512 << 2)) * sin(OpenFIREsquare.Ang()) +
+                            (OpenFIREsquare.testMedianY() - (384 << 2)) * cos(OpenFIREsquare.Ang()) + (384 << 2);
+                        // Work out LED locations by assuming height is 100%
+                        profileData[selectedProfile].TLled = (res_x / 2) - ((OpenFIREsquare.W() * (res_y  / OpenFIREsquare.H())) / 2);
+                        profileData[selectedProfile].TRled = (res_x / 2) + ((OpenFIREsquare.W() * (res_y  / OpenFIREsquare.H())) / 2);
+                    }
+
+                    // Update Cam centre in perspective library
+                    OpenFIREper.source(profileData[selectedProfile].adjX, profileData[selectedProfile].adjY);
+                    OpenFIREper.deinit(0);
+
+                    // Set mouse movement to top position
+                    mouseTargetX = 32768 / 2;
+                    mouseTargetY = 0;
+                    mouseMoving = true;
+                    break;
 
                 case Cali_Bottom:
-                  // Set Offset buffer
-                  topOffset = mouseY;
-                  // Move to bottom calibration point
-                  AbsMouse5.move(32768/2, 32766);
-                  break;
+                    // Set Offset buffer
+                    topOffset = mouseY;
+
+                    // Set mouse movement to bottom position
+                    mouseTargetX = 32768 / 2;
+                    mouseTargetY = 32767;
+                    mouseMoving = true;
+                    break;
 
                 case Cali_Left:
-                  // Set Offset buffer
-                  bottomOffset = (res_y - mouseY);
-                  // Move to left calibration point
-                  AbsMouse5.move(0, 32768/2);
-                  break;
+                    // Set Offset buffer
+                    bottomOffset = (res_y - mouseY);
+
+                    // Set mouse movement to left position
+                    mouseTargetX = 0;
+                    mouseTargetY = 32768 / 2;
+                    mouseMoving = true;
+                    break;
 
                 case Cali_Right:
-                  // Set Offset buffer
-                  leftOffset = mouseX;
-                  // Move to right calibration point
-                  AbsMouse5.move(32766, 32768/2);
-                  break;
+                    // Set Offset buffer
+                    leftOffset = mouseX;
+
+                    // Set mouse movement to right position
+                    mouseTargetX = 32767;
+                    mouseTargetY = 32768 / 2;
+                    mouseMoving = true;
+                    break;
 
                 case Cali_Center:
-                  // Set Offset buffer
-                  rightOffset = (res_x - mouseX);
-                  delay(100);
-                  // Save Offset buffer to profile
-                  profileData[selectedProfile].topOffset = topOffset;
-                  profileData[selectedProfile].bottomOffset = bottomOffset;
-                  profileData[selectedProfile].leftOffset = leftOffset;
-                  profileData[selectedProfile].rightOffset = rightOffset;
-                  // Move back to center calibration point
-                  AbsMouse5.move(32768/2, 32768/2);
-                  break;
+                    // Set Offset buffer
+                    rightOffset = (res_x - mouseX);
+                    delay(100);
+                    // Save Offset buffer to profile
+                    profileData[selectedProfile].topOffset = topOffset;
+                    profileData[selectedProfile].bottomOffset = bottomOffset;
+                    profileData[selectedProfile].leftOffset = leftOffset;
+                    profileData[selectedProfile].rightOffset = rightOffset;
+
+                    // Move back to center calibration point
+                    mouseTargetX = 32768 / 2;
+                    mouseTargetY = 32768 / 2;
+                    mouseMoving = true;
+                    break;
 
                 case Cali_Verify:
-                  // Apply new Cam center offsets with Offsets applied
-                  if(profileData[selectedProfile].irLayout) {
-                      profileData[selectedProfile].adjX = (OpenFIREdiamond.testMedianX() - (512 << 2)) * cos(OpenFIREdiamond.Ang()) - (OpenFIREdiamond.testMedianY() - (384 << 2)) * sin(OpenFIREdiamond.Ang()) + (512 << 2);       
-                      profileData[selectedProfile].adjY = (OpenFIREdiamond.testMedianX() - (512 << 2)) * sin(OpenFIREdiamond.Ang()) + (OpenFIREdiamond.testMedianY() - (384 << 2)) * cos(OpenFIREdiamond.Ang()) + (384 << 2);
-                  } else {
-                      profileData[selectedProfile].adjX = (OpenFIREsquare.testMedianX() - (512 << 2)) * cos(OpenFIREsquare.Ang()) - (OpenFIREsquare.testMedianY() - (384 << 2)) * sin(OpenFIREsquare.Ang()) + (512 << 2);       
-                      profileData[selectedProfile].adjY = (OpenFIREsquare.testMedianX() - (512 << 2)) * sin(OpenFIREsquare.Ang()) + (OpenFIREsquare.testMedianY() - (384 << 2)) * cos(OpenFIREsquare.Ang()) + (384 << 2);
-                  }
-                  // Update Cam centre in perspective library
-                  OpenFIREper.source(profileData[selectedProfile].adjX, profileData[selectedProfile].adjY);
-                  OpenFIREper.deinit(0);
+                    // Apply new Cam center offsets with Offsets applied
+                    if(profileData[selectedProfile].irLayout) {
+                        profileData[selectedProfile].adjX = (OpenFIREdiamond.testMedianX() - (512 << 2)) * cos(OpenFIREdiamond.Ang()) -
+                            (OpenFIREdiamond.testMedianY() - (384 << 2)) * sin(OpenFIREdiamond.Ang()) + (512 << 2);
+                        profileData[selectedProfile].adjY = (OpenFIREdiamond.testMedianX() - (512 << 2)) * sin(OpenFIREdiamond.Ang()) +
+                            (OpenFIREdiamond.testMedianY() - (384 << 2)) * cos(OpenFIREdiamond.Ang()) + (384 << 2);
+                    } else {
+                        profileData[selectedProfile].adjX = (OpenFIREsquare.testMedianX() - (512 << 2)) * cos(OpenFIREsquare.Ang()) -
+                            (OpenFIREsquare.testMedianY() - (384 << 2)) * sin(OpenFIREsquare.Ang()) + (512 << 2);
+                        profileData[selectedProfile].adjY = (OpenFIREsquare.testMedianX() - (512 << 2)) * sin(OpenFIREsquare.Ang()) +
+                            (OpenFIREsquare.testMedianY() - (384 << 2)) * cos(OpenFIREsquare.Ang()) + (384 << 2);
+                    }
+                    // Update Cam centre in perspective library
+                    OpenFIREper.source(profileData[selectedProfile].adjX, profileData[selectedProfile].adjY);
+                    OpenFIREper.deinit(0);
 
-                  // let the user test.
-                  SetMode(GunMode_Verification);
-                  while(gunMode == GunMode_Verification) {
-                      buttons.Poll();
-                      if(irPosUpdateTick) {
-                          irPosUpdateTick = 0;
-                          GetPosition();
-                      }
-                      // If it's good, move onto cali finish.
-                      if(buttons.pressed == BtnMask_Trigger) {
-                          calStage++;
-                          // stay in Verification Mode, as the code outside of the Cali loop will catch us.
-                          break;
-                      // Press A/B to restart cali for current profile
-                      } else if(buttons.pressedReleased & ExitPauseModeHoldBtnMask) {
-                          calStage = 0;
-                          Serial.printf("CalStage: %d\r\n", Cali_Init);
-                          Serial.flush();
-                          // (re)set current values to factory defaults
-                          profileData[selectedProfile].topOffset = 0, profileData[selectedProfile].bottomOffset = 0,
-                          profileData[selectedProfile].leftOffset = 0, profileData[selectedProfile].rightOffset = 0;
-                          profileData[selectedProfile].adjX = 512 << 2, profileData[selectedProfile].adjY = 384 << 2;
-                          SetMode(GunMode_Calibration);
-                          AbsMouse5.move(32768/2, 32768/2);
-                      // Press C/Home to exit wholesale without committing new cali values
-                      } else if(buttons.pressedReleased & ExitPauseModeBtnMask && !justBooted) {
-                          Serial.printf("CalStage: %d\r\n", Cali_Verify+1);
-                          // Reapplying backed up data
-                          profileData[selectedProfile].topOffset = _topOffset;
-                          profileData[selectedProfile].bottomOffset = _bottomOffset;
-                          profileData[selectedProfile].leftOffset = _leftOffset;
-                          profileData[selectedProfile].rightOffset = _rightOffset;
-                          profileData[selectedProfile].TLled = _TLled;
-                          profileData[selectedProfile].TRled = _TRled;
-                          profileData[selectedProfile].adjX = _adjX;
-                          profileData[selectedProfile].adjY = _adjY;
-                          // re-print the profile
-                          stateFlags |= StateFlag_PrintSelectedProfile;
-                          // re-apply the cal stored in the profile
-                          if(dockedCalibrating) {
-                              SetMode(GunMode_Docked);
-                              dockedCalibrating = false;
-                          } else {
-                              SetMode(GunMode_Run);
-                          }
-                          return;
-                      }
-                  }
-                  break;
+                    // Let the user test.
+                    SetMode(GunMode_Verification);
+                    while(gunMode == GunMode_Verification) {
+                        buttons.Poll();
+                        if(irPosUpdateTick) {
+                            irPosUpdateTick = 0;
+                            GetPosition();
+                        }
+                        // If it's good, move onto calibration finish.
+                        if(buttons.pressed == BtnMask_Trigger) {
+                            calStage++;
+                            // Stay in Verification Mode; the code outside of the calibration loop will catch us.
+                            break;
+                        // Press A/B to restart calibration for current profile
+                        } else if(buttons.pressedReleased & ExitPauseModeHoldBtnMask) {
+                            calStage = 0;
+                            Serial.printf("CalStage: %d\r\n", Cali_Init);
+                            Serial.flush();
+                            // (Re)set current values to factory defaults
+                            profileData[selectedProfile].topOffset = 0;
+                            profileData[selectedProfile].bottomOffset = 0;
+                            profileData[selectedProfile].leftOffset = 0;
+                            profileData[selectedProfile].rightOffset = 0;
+                            profileData[selectedProfile].adjX = 512 << 2;
+                            profileData[selectedProfile].adjY = 384 << 2;
+                            SetMode(GunMode_Calibration);
+                            AbsMouse5.move(32768/2, 32768/2);
+                        // Press C/Home to exit without committing new calibration values
+                        } else if(buttons.pressedReleased & ExitPauseModeBtnMask && !justBooted) {
+                            Serial.printf("CalStage: %d\r\n", Cali_Verify+1);
+                            // Reapply backed-up data
+                            profileData[selectedProfile].topOffset = _topOffset;
+                            profileData[selectedProfile].bottomOffset = _bottomOffset;
+                            profileData[selectedProfile].leftOffset = _leftOffset;
+                            profileData[selectedProfile].rightOffset = _rightOffset;
+                            profileData[selectedProfile].TLled = _TLled;
+                            profileData[selectedProfile].TRled = _TRled;
+                            profileData[selectedProfile].adjX = _adjX;
+                            profileData[selectedProfile].adjY = _adjY;
+                            // Re-print the profile
+                            stateFlags |= StateFlag_PrintSelectedProfile;
+                            // Re-apply the calibration stored in the profile
+                            if(dockedCalibrating) {
+                                SetMode(GunMode_Docked);
+                                dockedCalibrating = false;
+                            } else {
+                                SetMode(GunMode_Run);
+                            }
+                            return;
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
     }
-    // Break Cali
+
+    // Break calibration
     if(justBooted) {
         // If this is an initial calibration, save it immediately!
         stateFlags |= StateFlag_SavePreferencesEn;
@@ -1963,59 +2034,6 @@ void ExecCalMode()
     Serial.printf("CalStage: %d\r\n", Cali_Verify+1);
 }
 
-// Locking function moving from cali point to point
-void CaliMousePosMove(uint8_t caseNumber)
-{
-    int32_t xPos;
-    int32_t yPos;
-
-    // Note: All TinyUSB device updates are blocking when a previous signal hasn't finished transmitting,
-    // so we skip chunks to speed things the hell up.
-    // These originally were inc/decrementing by 1 with a 20us delay between.
-
-    switch(caseNumber) {
-        case Cali_Top:
-          for(yPos = 32768/2; yPos > 0; yPos = yPos - 30) {
-              if(yPos < 31) { yPos = 0; }
-              AbsMouse5.move(32768/2, yPos);
-          }
-          delay(5);
-          break;
-        case Cali_Bottom:
-          for(yPos = 0; yPos < 32767; yPos = yPos + 30) {
-              if(yPos > 32767-31) { yPos = 32766; }
-              AbsMouse5.move(32768/2, yPos);
-          }
-          delay(5);
-          break;
-        case Cali_Left:
-          yPos = 32767;
-          for(xPos = 32768/2; xPos > 0; xPos = xPos - 30) {
-              if(xPos < 31) { xPos = 0; }
-              if(yPos > 32768/2) { yPos = yPos - 30; }
-              else { yPos = 32768/2; }
-              AbsMouse5.move(xPos, yPos);
-          }
-          delay(5);
-          break;
-        case Cali_Right:
-          for(xPos = 0; xPos < 32767; xPos = xPos + 30) {
-              if(xPos > 32767-31) { xPos = 32766; }
-              AbsMouse5.move(xPos, 32768/2);
-          }
-          delay(5);
-          break;
-        case Cali_Center:
-          for(xPos = 32767; xPos > 32768/2; xPos = xPos - 30) {
-              if(xPos < 32768/2) { xPos = 32768/2; }
-              AbsMouse5.move(xPos, 32768/2);
-          }
-          delay(5);
-          break;
-        default:
-          break;
-    }
-}
 
 // Get tilt adjusted position from IR postioning camera
 // Updates finalX and finalY values
@@ -3028,26 +3046,35 @@ void SerialProcessingDocked()
               // Testing feedback
               case 't':
                 serialInput = Serial.read();
-                if(serialInput == 's') {
-                  digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH);
-                  delay(SamcoPreferences::settings.solenoidNormalInterval);
-                  digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
-                } else if(serialInput == 'r') {
-                  analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity);
-                  delay(SamcoPreferences::settings.rumbleInterval);
-                  digitalWrite(SamcoPreferences::pins.oRumble, LOW);
-                } else if(serialInput == 'R') {
-                  digitalWrite(SamcoPreferences::pins.oLedR, HIGH);
-                  digitalWrite(SamcoPreferences::pins.oLedG, LOW);
-                  digitalWrite(SamcoPreferences::pins.oLedB, LOW);
-                } else if(serialInput == 'G') {
-                  digitalWrite(SamcoPreferences::pins.oLedR, LOW);
-                  digitalWrite(SamcoPreferences::pins.oLedG, HIGH);
-                  digitalWrite(SamcoPreferences::pins.oLedB, LOW);
-                } else if(serialInput == 'B') {
-                  digitalWrite(SamcoPreferences::pins.oLedR, LOW);
-                  digitalWrite(SamcoPreferences::pins.oLedG, LOW);
-                  digitalWrite(SamcoPreferences::pins.oLedB, HIGH);
+                switch(serialInput) {
+                    #ifdef USES_SOLENOID
+                    case 's':
+                      digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH);
+                      delay(SamcoPreferences::settings.solenoidNormalInterval);
+                      digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
+                      break;
+                    #endif // USES_SOLENOID
+                    #ifdef USES_RUMBLE
+                    case 'r':
+                      analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity);
+                      delay(SamcoPreferences::settings.rumbleInterval);
+                      digitalWrite(SamcoPreferences::pins.oRumble, LOW);
+                      break;
+                    #endif // USES_RUMBLE
+                    #ifdef LED_ENABLE
+                    // meant to be for 4pins, but will update all LED devices anyways.
+                    case 'R':
+                      LedUpdate(255, 0, 0);
+                      break;
+                    case 'G':
+                      LedUpdate(0, 255, 0);
+                      break;
+                    case 'B':
+                      LedUpdate(0, 0, 255);
+                      break;
+                    #endif // LED_ENABLE
+                    default:
+                      break;
                 }
                 break;
               case 'x':
@@ -3081,6 +3108,10 @@ void SerialProcessing()
                   // Set the LEDs to a mid-intense white.
                   LedUpdate(127, 127, 127);
               #endif // LED_ENABLE
+              #ifdef USES_DISPLAY
+                  // init basic display to show mamehook icon
+                  if(gunMode == GunMode_Run) { OLED.ScreenModeChange(ExtDisplay::Screen_Mamehook_Single, buttons.analogOutput); }
+              #endif // USES_DISPLAY
           }
           break;
         // Modesetting Signal
@@ -3102,6 +3133,25 @@ void SerialProcessing()
                     case '1':
                       buttons.analogOutput = true;
                       Gamepad16.stickRight = (Serial.peek() == 'L') ? true: false;
+                      break;
+                    // official "MiSTer optimized" mode
+                    case '9':
+                      buttons.analogOutput = true;
+                      Gamepad16.stickRight = true;
+                      // HACK SHACK - testing MiSTer-friendly default gamepad maps
+                      LightgunButtons::ButtonDesc[BtnIdx_Trigger].reportCode3 = PAD_A,
+                      LightgunButtons::ButtonDesc[BtnIdx_A].reportCode3       = PAD_B,
+                      LightgunButtons::ButtonDesc[BtnIdx_B].reportCode3       = PAD_X,
+                      LightgunButtons::ButtonDesc[BtnIdx_Reload].reportCode3  = PAD_Y,
+                      LightgunButtons::ButtonDesc[BtnIdx_Start].reportCode3   = PAD_START,
+                      LightgunButtons::ButtonDesc[BtnIdx_Select].reportCode3  = PAD_SELECT,
+                      LightgunButtons::ButtonDesc[BtnIdx_Up].reportCode3      = PAD_UP,
+                      LightgunButtons::ButtonDesc[BtnIdx_Down].reportCode3    = PAD_DOWN,
+                      LightgunButtons::ButtonDesc[BtnIdx_Left].reportCode3    = PAD_LEFT,
+                      LightgunButtons::ButtonDesc[BtnIdx_Right].reportCode3   = PAD_RIGHT,
+                      LightgunButtons::ButtonDesc[BtnIdx_Pedal].reportCode3   = PAD_LB,
+                      LightgunButtons::ButtonDesc[BtnIdx_Pedal2].reportCode3  = PAD_RB,
+                      LightgunButtons::ButtonDesc[BtnIdx_Pump].reportCode3    = PAD_C;
                       break;
                 }
                 AbsMouse5.releaseAll();
@@ -3259,6 +3309,7 @@ void SerialProcessing()
                 }
                 if(Serial.read() == 'B') {
                     OLED.lifeBar = true;
+		    dispMaxLife = 0;
                 } else { OLED.lifeBar = false; }
                 // prevent glitching if currently in pause mode
                 if(gunMode == GunMode_Run) {
@@ -3290,8 +3341,8 @@ void SerialProcessing()
                   serialQueue = 0b00000000;
                   serialARcorrection = false;
                   #ifdef USES_DISPLAY
-                  OLED.serialDisplayType = ExtDisplay::ScreenSerial_None;
-                  if(gunMode == GunMode_Run) { OLED.ScreenModeChange(ExtDisplay::Screen_Normal, buttons.analogOutput); }
+                      OLED.serialDisplayType = ExtDisplay::ScreenSerial_None;
+                      if(gunMode == GunMode_Run) { OLED.ScreenModeChange(ExtDisplay::Screen_Normal, buttons.analogOutput); }
                   #endif // USES_DISPLAY
                   #ifdef LED_ENABLE
                       serialLEDPulseColorMap = 0b00000000;               // Clear any stale serial LED pulses
@@ -3312,7 +3363,6 @@ void SerialProcessing()
                   #endif // USES_RUMBLE
                   #ifdef USES_SOLENOID
                       digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
-                      serialSolPulseOn = false;
                       serialSolPulses = 0;
                       serialSolPulsesLast = 0;
                   #endif // USES_SOLENOID
@@ -3380,10 +3430,10 @@ void SerialProcessing()
                 Serial.read();                                         // nomf the padding
                 serialInput = Serial.read();                           // Read the next number.
                 if(serialInput == '1') {         // Is it a solenoid "on" command?)
-                    bitSet(serialQueue, 0);                            // Queue the solenoid on bit.
+                    bitSet(serialQueue, SerialQueue_Solenoid);         // Queue the solenoid on bit.
                 } else if(serialInput == '2' &&  // Is it a solenoid pulse command?
-                !bitRead(serialQueue, 1)) {      // (and we aren't already pulsing?)
-                    bitSet(serialQueue, 1);                            // Set the solenoid pulsing bit!
+                !bitRead(serialQueue, SerialQueue_SolPulse)) {  // (and we aren't already pulsing?)
+                    bitSet(serialQueue, SerialQueue_SolPulse);         // Set the solenoid pulsing bit!
                     Serial.read();                                     // nomf the padding bit.
                     char serialInputS[4];
                     for(byte n = 0; n < 3; n++) {                      // For three runs,
@@ -3395,7 +3445,7 @@ void SerialProcessing()
                     serialSolPulses = atoi(serialInputS);              // Import the amount of pulses we're being told to do.
                     serialSolPulsesLast = 0;                           // PulsesLast on zero indicates we haven't started pulsing.
                 } else if(serialInput == '0') {  // Else, it's a solenoid off signal.
-                    bitClear(serialQueue, 0);                          // Disable the solenoid off bit!
+                    bitClear(serialQueue, SerialQueue_Solenoid);       // Disable the solenoid off bit!
                 }
                 break;
               #endif // USES_SOLENOID
@@ -3405,10 +3455,10 @@ void SerialProcessing()
                 Serial.read();                                         // nomf the padding
                 serialInput = Serial.read();                           // read the next number.
                 if(serialInput == '1') {         // Is it an on signal?
-                    bitSet(serialQueue, 2);                            // Queue the rumble on bit.
+                    bitSet(serialQueue, SerialQueue_Rumble);           // Queue the rumble on bit.
                 } else if(serialInput == '2' &&  // Is it a pulsed on signal?
-                !bitRead(serialQueue, 3)) {      // (and we aren't already pulsing?)
-                    bitSet(serialQueue, 3);                            // Set the rumble pulsed bit.
+                !bitRead(serialQueue, SerialQueue_RumbPulse)) {  // (and we aren't already pulsing?)
+                    bitSet(serialQueue, SerialQueue_RumbPulse);        // Set the rumble pulses bit.
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
                     for(byte n = 0; n < 3; n++) {                      // For three runs,
@@ -3420,7 +3470,7 @@ void SerialProcessing()
                     serialRumbPulses = atoi(serialInputS);             // and set as the amount of rumble pulses queued.
                     serialRumbPulsesLast = 0;                          // Reset the serialPulsesLast count.
                 } else if(serialInput == '0') {  // Else, it's a rumble off signal.
-                    bitClear(serialQueue, 2);                          // Queue the rumble off bit... 
+                    bitClear(serialQueue, SerialQueue_Rumble);         // Queue the rumble off bit... 
                     //bitClear(serialQueue, 3); // And the rumble pulsed bit.
                     // TODO: do we want to set this off if we get a rumble off bit?
                 }
@@ -3433,7 +3483,7 @@ void SerialProcessing()
                 Serial.read();                                         // nomf the padding
                 serialInput = Serial.read();                           // Read the next number
                 if(serialInput == '1') {         // is it an "on" command?
-                    bitSet(serialQueue, 4);                            // set that here!
+                    bitSet(serialQueue, SerialQueue_Red);              // set that here!
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
                     for(byte n = 0; n < 3; n++) {                      // For three runs,
@@ -3443,9 +3493,11 @@ void SerialProcessing()
                         }
                     }
                     serialLEDR = atoi(serialInputS);                   // And set that as the strength of the red value that's requested!
+                    bitClear(serialQueue, SerialQueue_LEDPulse);       // Overwrite pulse bits.
+                    serialLEDPulseColorMap = 0;
                 } else if(serialInput == '2' &&  // else, is it a pulse command?
-                !bitRead(serialQueue, 7)) {      // (and we haven't already sent a pulse command?)
-                    bitSet(serialQueue, 7);                            // Set the pulse bit!
+                !bitRead(serialQueue, SerialQueue_LEDPulse)) {  // (and we haven't already sent a pulse command?)
+                    bitSet(serialQueue, SerialQueue_LEDPulse);         // Set the pulse bit!
                     serialLEDPulseColorMap = 0b00000001;               // Set the R LED as the one pulsing only (overwrites the others).
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
@@ -3458,8 +3510,9 @@ void SerialProcessing()
                     serialLEDPulses = atoi(serialInputS);              // and set that as the amount of pulses requested
                     serialLEDPulsesLast = 0;                           // reset the pulses done count.
                 } else if(serialInput == '0') {  // else, it's an off command.
-                    bitClear(serialQueue, 4);                          // Set the R bit off.
-                    serialLEDR = 0;                                    // Clear the R value.
+                    serialQueue &= 0b01101111;                         // Set the R and Pulse commands off.
+                    serialLEDR = 0;                                    // Clear the R value. 
+                    serialLEDPulseColorMap = 0;
                 }
                 break;
               // LED Green bits
@@ -3468,7 +3521,7 @@ void SerialProcessing()
                 Serial.read();                                         // nomf the padding
                 serialInput = Serial.read();                           // Read the next number
                 if(serialInput == '1') {         // is it an "on" command?
-                    bitSet(serialQueue, 5);                            // set that here!
+                    bitSet(serialQueue, SerialQueue_Green);            // set that here!
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
                     for(byte n = 0; n < 3; n++) {                      // For three runs,
@@ -3478,9 +3531,11 @@ void SerialProcessing()
                         }
                     }
                     serialLEDG = atoi(serialInputS);                   // And set that here!
+                    bitClear(serialQueue, SerialQueue_LEDPulse);       // Overwrite pulse bits.
+                    serialLEDPulseColorMap = 0;
                 } else if(serialInput == '2' &&  // else, is it a pulse command?
-                !bitRead(serialQueue, 7)) {      // (and we haven't already sent a pulse command?)
-                    bitSet(serialQueue, 7);                            // Set the pulse bit!
+                !bitRead(serialQueue, SerialQueue_LEDPulse)) {  // (and we haven't already sent a pulse command?)
+                    bitSet(serialQueue, SerialQueue_LEDPulse);         // Set the pulse bit!
                     serialLEDPulseColorMap = 0b00000010;               // Set the G LED as the one pulsing only (overwrites the others).
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
@@ -3493,8 +3548,9 @@ void SerialProcessing()
                     serialLEDPulses = atoi(serialInputS);              // and set that as the amount of pulses requested
                     serialLEDPulsesLast = 0;                           // reset the pulses done count.
                 } else if(serialInput == '0') {  // else, it's an off command.
-                    bitClear(serialQueue, 5);                       // Set the G bit off.
+                    serialQueue &= 0b01011111;                         // Set the G and Pulse commands off.
                     serialLEDG = 0;                                    // Clear the G value.
+                    serialLEDPulseColorMap = 0;
                 }
                 break;
               // LED Blue bits
@@ -3503,7 +3559,7 @@ void SerialProcessing()
                 Serial.read();                                         // nomf the padding
                 serialInput = Serial.read();                           // Read the next number
                 if(serialInput == '1') {         // is it an "on" command?
-                    bitSet(serialQueue, 6);                            // set that here!
+                    bitSet(serialQueue, SerialQueue_Blue);             // set that here!
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
                     for(byte n = 0; n < 3; n++) {                      // For three runs,
@@ -3513,9 +3569,11 @@ void SerialProcessing()
                         }
                     }
                     serialLEDB = atoi(serialInputS);                   // And set that as the strength requested here!
+                    bitClear(serialQueue, SerialQueue_LEDPulse);       // Overwrite pulse bits.
+                    serialLEDPulseColorMap = 0;
                 } else if(serialInput == '2' &&  // else, is it a pulse command?
-                !bitRead(serialQueue, 7)) {      // (and we haven't already sent a pulse command?)
-                    bitSet(serialQueue, 7);                       // Set the pulse bit!
+                !bitRead(serialQueue, SerialQueue_LEDPulse)) {  // (and we haven't already sent a pulse command?)
+                    bitSet(serialQueue, SerialQueue_LEDPulse);         // Set the pulse bit!
                     serialLEDPulseColorMap = 0b00000100;               // Set the B LED as the one pulsing only (overwrites the others).
                     Serial.read();                                     // nomf the padding
                     char serialInputS[4];
@@ -3528,8 +3586,9 @@ void SerialProcessing()
                     serialLEDPulses = atoi(serialInputS);              // and set that as the amount of pulses requested
                     serialLEDPulsesLast = 0;                           // reset the pulses done count.
                 } else if(serialInput == '0') {  // else, it's an off command.
-                    bitClear(serialQueue, 6);                          // Set the B bit off.
+                    serialQueue &= 0b00111111;                         // Set the B and Pulse commands off.
                     serialLEDB = 0;                                    // Clear the B value.
+                    serialLEDPulseColorMap = 0;
                 }
                 break;
               #endif // LED_ENABLE
@@ -3562,6 +3621,10 @@ void SerialProcessing()
                         }
                     }
                     serialLifeCount = atoi(serialInputS);
+		    if (OLED.lifeBar){
+		    	if (serialLifeCount > dispMaxLife) { dispMaxLife = serialLifeCount; }
+			dispLifePercentage = (100 * serialLifeCount) / dispMaxLife; // Calculate the Life % to show 
+		    }
                     break;
                   }
                 }
@@ -3587,37 +3650,32 @@ void SerialHandling()
 
     #ifdef USES_SOLENOID
       if(SamcoPreferences::toggles.solenoidActive) {
-          if(bitRead(serialQueue, 0)) {                             // If the solenoid digital bit is on,
-              digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH);                           // Make it go!
-          } else if(bitRead(serialQueue, 1)) {                      // if the solenoid pulse bit is on,
+          if(bitRead(serialQueue, SerialQueue_Solenoid)) {          // If the solenoid digital bit is on,
+              digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH);      // Make it go!
+          } else if(bitRead(serialQueue, SerialQueue_SolPulse)) {   // if the solenoid pulse bit is on,
               if(!serialSolPulsesLast) {                            // Have we started pulsing?
-                  analogWrite(SamcoPreferences::pins.oSolenoid, 178);                         // Start pulsing it on!
-                  serialSolPulseOn = true;                               // Set that the pulse cycle is in on.
+                  digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH);  // Start pulsing it on!
                   serialSolPulsesLast = 1;                               // Start the sequence.
                   serialSolPulses++;                                     // Cheating and scooting the pulses bit up.
               } else if(serialSolPulsesLast <= serialSolPulses) {   // Have we met the pulses quota?
-                  unsigned long currentMillis = millis();                // Calibrate timer.
-                  if(currentMillis - serialSolPulsesLastUpdate > serialSolPulsesLength) { // Have we passed the set interval length between stages?
-                      if(serialSolPulseOn) {                        // If we're currently pulsing on,
-                          analogWrite(SamcoPreferences::pins.oSolenoid, 122);                 // Start pulsing it off.
-                          serialSolPulseOn = false;                      // Set that we're in off.
+                  if(digitalRead(SamcoPreferences::pins.oSolenoid)) {
+                      if(millis() - serialSolPulsesLastUpdate >= SamcoPreferences::settings.solenoidNormalInterval) {
+                          digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);  // Start pulsing it off.
                           serialSolPulsesLast++;                         // Iterate that we've done a pulse cycle,
                           serialSolPulsesLastUpdate = millis();          // Timestamp our last pulse event.
-                      } else {                                      // Or if we're pulsing off,
-                          analogWrite(SamcoPreferences::pins.oSolenoid, 178);                 // Start pulsing it on.
-                          serialSolPulseOn = true;                       // Set that we're in on.
+                      }
+                  } else {
+                      if(millis() - serialSolPulsesLastUpdate >= SamcoPreferences::settings.solenoidFastInterval * SamcoPreferences::settings.autofireWaitFactor) {
+                          digitalWrite(SamcoPreferences::pins.oSolenoid, HIGH); // Start pulsing it on.
                           serialSolPulsesLastUpdate = millis();          // Timestamp our last pulse event.
                       }
                   }
-              } else {  // let the armature smoothly sink loose for one more pulse length before snapping it shut off.
-                  unsigned long currentMillis = millis();                // Calibrate timer.
-                  if(currentMillis - serialSolPulsesLastUpdate > serialSolPulsesLength) { // Have we paassed the set interval length between stages?
-                      digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);                    // Finally shut it off for good.
-                      bitClear(serialQueue, 1);                          // Set the pulse bit as off.
-                  }
+              } else { // finished pulsing
+                  digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);   // Finally shut it off for good.
+                  bitClear(serialQueue, SerialQueue_SolPulse);           // Set the pulse bit as off.
               }
           } else {  // or if it's not,
-              digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);                            // turn it off!
+              digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);       // turn it off!
           }
       } else {
           digitalWrite(SamcoPreferences::pins.oSolenoid, LOW);
@@ -3625,30 +3683,29 @@ void SerialHandling()
   #endif // USES_SOLENOID
   #ifdef USES_RUMBLE
       if(SamcoPreferences::toggles.rumbleActive) {
-          if(bitRead(serialQueue, 2)) {                             // Is the rumble on bit set?
-              analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity);              // turn/keep it on.
+          if(bitRead(serialQueue, SerialQueue_Rumble)) {                 // Is the rumble on bit set?
+              analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity); // turn/keep it on.
               //bitClear(serialQueue, 3);
-          } else if(bitRead(serialQueue, 3)) {                      // or if the rumble pulse bit is set,
+          } else if(bitRead(serialQueue, SerialQueue_RumbPulse)) {  // or if the rumble pulse bit is set,
               if(!serialRumbPulsesLast) {                           // is the pulses last bit set to off?
-                  analogWrite(SamcoPreferences::pins.oRumble, 75);                            // we're starting fresh, so use the stage 0 value.
+                  analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity / 3); // we're starting fresh, so use the stage 0 value.
                   serialRumbPulseStage = 0;                              // Set that we're at stage 0.
                   serialRumbPulsesLast = 1;                              // Set that we've started a pulse rumble command, and start counting how many pulses we're doing.
               } else if(serialRumbPulsesLast <= serialRumbPulses) { // Have we exceeded the set amount of pulses the rumble command called for?
-                  unsigned long currentMillis = millis();                // Calibrate the timer.
-                  if(currentMillis - serialRumbPulsesLastUpdate > serialRumbPulsesLength) { // have we waited enough time between pulse stages?
+                  if(millis() - serialRumbPulsesLastUpdate > serialRumbPulsesLength) { // have we waited enough time between pulse stages?
                       switch(serialRumbPulseStage) {                     // If so, let's start processing.
                           case 0:                                        // Basically, each case
-                              analogWrite(SamcoPreferences::pins.oRumble, 255);               // bumps up the intensity, (lowest to rising)
+                              analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity); // bumps up the intensity, (lowest to rising)
                               serialRumbPulseStage++;                    // and increments the stage of the pulse.
                               serialRumbPulsesLastUpdate = millis();     // and timestamps when we've had updated this last.
                               break;                                     // Then quits the switch.
                           case 1:
-                              analogWrite(SamcoPreferences::pins.oRumble, 120);               // (rising to peak)
+                              analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity / 2); // (rising to peak)
                               serialRumbPulseStage++;
                               serialRumbPulsesLastUpdate = millis();
                               break;
                           case 2:
-                              analogWrite(SamcoPreferences::pins.oRumble, 75);                // (peak to falling,)
+                              analogWrite(SamcoPreferences::pins.oRumble, SamcoPreferences::settings.rumbleIntensity / 3); // (peak to falling,)
                               serialRumbPulseStage = 0;
                               serialRumbPulsesLast++;
                               serialRumbPulsesLastUpdate = millis();
@@ -3656,11 +3713,11 @@ void SerialHandling()
                       }
                   }
               } else {                                              // ...or the pulses count is complete.
-                  digitalWrite(SamcoPreferences::pins.oRumble, LOW);                          // turn off the motor,
-                  bitClear(serialQueue, 3);                              // and set the rumble pulses bit off, now that we've completed it.
+                  digitalWrite(SamcoPreferences::pins.oRumble, LOW);     // turn off the motor,
+                  bitClear(serialQueue, SerialQueue_RumbPulse);          // and set the rumble pulses bit off, now that we've completed it.
               }
           } else {                                                  // ...or we're being told to turn it off outright.
-              digitalWrite(SamcoPreferences::pins.oRumble, LOW);                              // Do that then.
+              digitalWrite(SamcoPreferences::pins.oRumble, LOW);
           }
       } else {
           digitalWrite(SamcoPreferences::pins.oRumble, LOW);
@@ -3668,14 +3725,9 @@ void SerialHandling()
   #endif // USES_RUMBLE
   #ifdef LED_ENABLE
     if(serialLEDChange) {                                     // Has the LED command state changed?
-        if(bitRead(serialQueue, 4) ||                         // Are either the R,
-        bitRead(serialQueue, 5) ||                            // G,
-        bitRead(serialQueue, 6)) {                            // OR B digital bits set to on?
-            // Command the LED to change/turn on with the values serialProcessing set for us.
-            LedUpdate(serialLEDR, serialLEDG, serialLEDB);
-            serialLEDChange = false;                               // Set the bit to off.
-        } else if(bitRead(serialQueue, 7)) {                  // Or is it an LED pulse command?
+        if(bitRead(serialQueue, SerialQueue_LEDPulse)) { // Or is it an LED pulse command?
             if(!serialLEDPulsesLast) {                        // Are we just starting?
+                serialQueue &= 0b10001111;                         // Clear static LED bits.
                 serialLEDPulsesLast = 1;                           // Set that we have started.
                 serialLEDPulseRising = true;                       // Set the LED cycle to rising.
                 // Reset all the LEDs to zero, the color map will tell us which one to focus on.
@@ -3683,8 +3735,7 @@ void SerialHandling()
                 serialLEDG = 0;
                 serialLEDB = 0;
             } else if(serialLEDPulsesLast <= serialLEDPulses) { // Else, have we not reached the number of pulses requested?
-                unsigned long currentMillis = millis();            // Calibrate the timer.
-                if(currentMillis - serialLEDPulsesLastUpdate > serialLEDPulsesLength) { // have we waited enough time between pulse stages?
+                if(millis() - serialLEDPulsesLastUpdate > serialLEDPulsesLength) { // have we waited enough time between pulse stages?
                     if(serialLEDPulseRising) {                // If we're in the rising stage,
                         switch(serialLEDPulseColorMap) {           // Check the color map
                             case 0b00000001:                       // Basically for R, G, or B,
@@ -3742,8 +3793,14 @@ void SerialHandling()
                 }
             } else {                                       // Or, we're done with the amount of pulse commands.
                 serialLEDPulseColorMap = 0b00000000;               // Clear the now-stale pulse color map,
-                bitClear(serialQueue, 7);                          // And flick the pulse command bit off.
+                bitClear(serialQueue, SerialQueue_LEDPulse);       // And flick the pulse command bit off.
             }
+        } else if(bitRead(serialQueue, SerialQueue_Red) ||           // Are either the R,
+                  bitRead(serialQueue, SerialQueue_Green) ||         // G,
+                  bitRead(serialQueue, SerialQueue_Blue)) {          // OR B digital bits set to on?
+            // Command the LED to change/turn on with the values serialProcessing set for us.
+            LedUpdate(serialLEDR, serialLEDG, serialLEDB);
+            serialLEDChange = false;                               // Set the bit to off.
         } else {                                           // Or, all the LED bits are off, so we should be setting it off entirely.
             LedOff();                                              // Turn it off.
             serialLEDChange = false;                               // We've done the change, so set it off to reduce redundant LED updates.
@@ -3757,12 +3814,14 @@ void SerialHandling()
 void TriggerFireSimple()
 {
     if(!buttonPressed &&                             // Have we not fired the last cycle,
-    offscreenButtonSerial && buttons.offScreen) {    // and are pointing the gun off screen WITH the offScreen button mode set?
-        AbsMouse5.press(MOUSE_RIGHT);                // Press the right mouse button
+    offscreenButtonSerial && buttons.offScreen) {    // and are pointing the gun off screen WITH the offScreen button mode set?    
+        if(buttons.analogOutput) { Gamepad16.press(LightgunButtons::ButtonDesc[BtnIdx_A].reportCode3); } 
+	      else { AbsMouse5.press(MOUSE_RIGHT); } 
         offscreenBShot = true;                       // Mark we pressed the right button via offscreen shot mode,
         buttonPressed = true;                        // Mark so we're not spamming these press events.
     } else if(!buttonPressed) {                      // Else, have we simply not fired the last cycle?
-        AbsMouse5.press(MOUSE_LEFT);                 // We're handling the trigger button press ourselves for a reason.
+	      if(buttons.analogOutput) { Gamepad16.press(LightgunButtons::ButtonDesc[BtnIdx_Trigger].reportCode3); }
+	      else { AbsMouse5.press(MOUSE_LEFT); }
         buttonPressed = true;                        // Set this so we won't spam a repeat press event again.
     }
 }
@@ -3772,10 +3831,12 @@ void TriggerNotFireSimple()
 {
     if(buttonPressed) {                              // Just to make sure we aren't spamming mouse button events.
         if(offscreenBShot) {                         // if it was marked as an offscreen button shot,
-            AbsMouse5.release(MOUSE_RIGHT);          // Release the right mouse,
+            if(buttons.analogOutput) { Gamepad16.release(LightgunButtons::ButtonDesc[BtnIdx_A].reportCode3); }
+	          else { AbsMouse5.release(MOUSE_RIGHT); }
             offscreenBShot = false;                  // And set it off.
         } else {                                     // Else,
-            AbsMouse5.release(MOUSE_LEFT);           // It was a normal shot, so just release the left mouse button.
+            if(buttons.analogOutput) { Gamepad16.release(LightgunButtons::ButtonDesc[BtnIdx_Trigger].reportCode3); }
+	          else { AbsMouse5.release(MOUSE_LEFT); }
         }
         buttonPressed = false;                       // Unset the button pressed bit.
     }
@@ -3820,7 +3881,7 @@ void SetMode(GunMode_e newMode)
         #ifdef USES_DISPLAY
           if(OLED.serialDisplayType == ExtDisplay::ScreenSerial_Both) {
             OLED.ScreenModeChange(ExtDisplay::Screen_Mamehook_Dual);
-          } else if(OLED.serialDisplayType > ExtDisplay::ScreenSerial_None) {
+          } else if(serialMode) {
             OLED.ScreenModeChange(ExtDisplay::Screen_Mamehook_Single, buttons.analogOutput);
           } else {
             OLED.ScreenModeChange(ExtDisplay::Screen_Normal, buttons.analogOutput);
@@ -4050,7 +4111,7 @@ void PrintResults()
         return;
     }
 
-    if(!Serial.dtr()) {
+    if(!Serial) {
         stateFlags |= StateFlagsDtrReset;
         return;
     }
@@ -4085,7 +4146,7 @@ void PrintResults()
 // Subroutine that prints all stored preferences information in a table
 void PrintPreferences()
 {
-    if(!(stateFlags & StateFlag_PrintPreferences) || !Serial.dtr()) {
+    if(!(stateFlags & StateFlag_PrintPreferences) || !Serial) {
         return;
     }
 
@@ -4519,11 +4580,12 @@ void LedInit()
         neopixel.begin();
     #endif // NEOPIXEL_PIN
  
+    /* Arduino Nano LED support disabled due to instability.
     #ifdef ARDUINO_NANO_RP2040_CONNECT
     pinMode(LEDR, OUTPUT);
     pinMode(LEDG, OUTPUT);
     pinMode(LEDB, OUTPUT);
-    #endif // NANO_RP2040
+    #endif // NANO_RP2040 */
     LedUpdate(255, 0, 0);
 }
 
@@ -4553,8 +4615,9 @@ void SetLedPackedColor(uint32_t color)
     byte g = highByte(color);
     byte b = lowByte(color);
 
-#if defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#ifdef ARDUINO_RASPBERRY_PI_PICO
     // since Pico LED is a simple on/off, round down and average the total color.
+    // TODO: Pico W will lock up when addressing its LED (WiFi module problems?)
     if(r < 100 && g < 100 && b < 100) { digitalWrite(PIN_LED, LOW); }
     else { digitalWrite(PIN_LED, HIGH); }
 #endif // ARDUINO_RASPBERRY_PI_PICO/W
@@ -4572,6 +4635,7 @@ void SetLedPackedColor(uint32_t color)
     }
 #endif // FOURPIN_LED
 
+/* Arduino Nano LED support disabled due to instability.
 #ifdef ARDUINO_NANO_RP2040_CONNECT
     // in case the color bytes were already flipped before, as Arduino Nano also uses power sink pins i.e. common anode
     if(ledIsValid && !SamcoPreferences::toggles.commonAnode) {
@@ -4582,7 +4646,7 @@ void SetLedPackedColor(uint32_t color)
     analogWrite(LEDR, r);
     analogWrite(LEDG, g);
     analogWrite(LEDB, b);
-#endif // NANO_RP2040
+#endif // NANO_RP2040 */
 }
 
 void LedOff()
@@ -4611,10 +4675,11 @@ void LedUpdate(byte r, byte g, byte b)
         }
     #endif // CUSTOM_NEOPIXEL
 
-    #if defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    #ifdef ARDUINO_RASPBERRY_PI_PICO
+    // TODO: Pico W will lock up when addressing its LED (WiFi module problems?)
         if(r < 100 && g < 100 && b < 100) { digitalWrite(PIN_LED, LOW); }
         else { digitalWrite(PIN_LED, HIGH); }
-    #endif // ARDUINO_RASPBERRY_PI_PICO/W
+    #endif // ARDUINO_RASPBERRY_PI_PICO
 
     #ifdef FOURPIN_LED
         if(ledIsValid) {
@@ -4629,6 +4694,7 @@ void LedUpdate(byte r, byte g, byte b)
         }
     #endif // FOURPIN_LED
 
+    /* Arduino Nano LED support disabled due to instability.
     #ifdef ARDUINO_NANO_RP2040_CONNECT
         #ifdef FOURPIN_LED
         // Nano's builtin is a common anode, so we use that logic by default if it's enabled on the external 4-pin;
@@ -4646,7 +4712,7 @@ void LedUpdate(byte r, byte g, byte b)
         analogWrite(LEDR, r);
         analogWrite(LEDG, g);
         analogWrite(LEDB, b);
-    #endif // NANO_RP2040
+    #endif // NANO_RP2040 */
 }
 
 // Macro that sets LEDs color depending on the mode it's set to
@@ -4926,7 +4992,7 @@ void UpdateBindings(bool offscreenEnable)
 void PrintDebugSerial()
 {
     // only print every second
-    if(millis() - serialDbMs >= 1000 && Serial.dtr()) {
+    if(millis() - serialDbMs >= 1000 && Serial) {
         Serial.print("mode ");
         Serial.print(gunMode);
         Serial.print(", IR pos fps ");
